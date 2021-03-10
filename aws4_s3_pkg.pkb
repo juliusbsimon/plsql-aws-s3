@@ -48,7 +48,7 @@ as
 	slsh											constant varchar2(3)	:= '%2F';	
 	-- this is the SHA256 HASH of a empty string. It is used when the request is null
 	g_null_hash								varchar2(100) := 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
-	
+	g_timezone varchar2(50) := 'America/Guyana';
 -- Keys for testing with ŁUKASZ ADAMCZAK blog ( http://czak.pl/2015/09/15/s3-rest-api-with-curl.html)
 -- Keys also work for testing with AWS page http://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-query-string-auth.html
 -- uncomment these if you want to run through his example to re-verify the hashing logic
@@ -307,7 +307,7 @@ as
 begin
 	-- convert the date/time to UTC/Zulu/GMT
 	select 
-		cast(P_DATE as timestamp with time zone) at time zone 'UTC' 
+		cast(P_DATE as timestamp with time zone) at time zone g_timezone 
 		into
 		l_timestamp
 	from dual;
@@ -821,7 +821,7 @@ end;
 	l_debug							boolean := true;
 	
 begin
-	l_date							:= localtimestamp;
+	l_date							:= systimestamp;
 	l_date_string 			:= to_char(l_date, 'YYYYMMDD');
 	l_time_string 			:= ISO_8601(l_date);
 	l_http_method				:= 'DELETE';
